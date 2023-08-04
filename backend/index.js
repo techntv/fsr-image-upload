@@ -4,8 +4,11 @@ const express = require("express");
 const app = express();
 const usersRouter = require("./routes/users");
 const auth = require("./middleware/auth");
+const cors = require("cors");
 
 const port = 8080;
+
+app.use(cors())
 
 app.use(express.json());
 

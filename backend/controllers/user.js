@@ -63,7 +63,7 @@ const sendEmail = async ({ email, username, res }) => {
     from: 'Admin',
     to: email,
     subject: 'Email Confirmation',
-    html: `Press the following link to verify your email: <a href=${apiUrl}/verify/${confirmationToken}>Verification Link</a>`
+    html: `Press the following link to verify your email: <a href=http://localhost:4000/verify/${confirmationToken}>Verification Link</a>`
   }
 
   // Send the email
@@ -94,7 +94,6 @@ const handleSignup = async (req, res) => {
 
     // Hash the password
     const salt = await bcrypt.genSalt(Number(process.env.SALT))
-    console.log('🚀 ~ file: user.js:23 ~ exports.signup= ~ salt:', salt)
     const hashedPassword = await bcrypt.hash(password, salt)
 
     // Create an user object
@@ -193,7 +192,7 @@ const handleLogin = async (req, res) => {
       user.token = token
 
       // user
-      res.status(200).json(user)
+      res.status(200).json({ email: user.email, token: user.token })
     } else {
       res.status(400).send('Invalid Credentials')
     }

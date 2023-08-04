@@ -6,11 +6,22 @@ import { Link } from "react-router-dom";
 
 import logo from "../assets/logo.png";
 import { AuthContext } from "../context";
-const Actions = ({ auth, customStyle }) => {
+
+
+const Actions = ({ auth, customStyle, dispatch }) => {
     return (
       <>
         {auth ? (
-          <button type="button" className={customStyle}>
+          <button
+            type="button"
+            className={customStyle}
+            onClick={() => {
+              localStorage.removeItem("authUser");
+              dispatch({
+                type: "LOGOUT",
+              });
+            }}
+          >
             Logout
           </button>
         ) : (
@@ -28,7 +39,7 @@ const Actions = ({ auth, customStyle }) => {
   };
 
 const Navbar = ({ auth }) => {
-  const { state } = useContext(AuthContext);
+  const { state , dispatch} = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -54,6 +65,7 @@ const Navbar = ({ auth }) => {
               <Actions
                 auth={state.auth}
                 customStyle="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+                dispatch={dispatch}
               />
             </div>
             <div className="-mr-2 flex md:hidden">

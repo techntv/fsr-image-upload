@@ -27,24 +27,32 @@ const login = ({ emailOrUsername, password }) => {
       /**
        * If successfully logged in, store the user data, inlucding the token, in the localStorage
        */
-      localStorage.setItem("user", JSON.stringify(res.data));
+      localStorage.setItem("authUser", JSON.stringify(res.data));
       return res.data;
     });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("authUser");
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("authUser"));
 };
+
+/**
+ * Handles the verify email request.
+ */
+const verify = (confirmationToken) => {
+    return axios.get(`${API_URL}/verify/${confirmationToken}`);
+  };
 
 const AuthService = {
   signup,
   login,
   logout,
   getCurrentUser,
+  verify
 };
 
 export default AuthService;
