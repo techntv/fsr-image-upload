@@ -13,9 +13,19 @@ const getFiles = () => {
   })
 }
 
+const updateFile = file => {
+  return axios.put(
+    `/file/${file._id}`,
+    { ...file },
+    {
+      headers: { ...authHeader() }
+    }
+  )
+}
 const UserService = {
   upload,
-  getFiles
+  getFiles,
+  updateFile
 }
 
 export default UserService
