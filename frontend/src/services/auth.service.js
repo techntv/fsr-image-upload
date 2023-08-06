@@ -1,6 +1,6 @@
 import axios from "axios"; // HTTP Client
 
-const API_URL = "http://localhost:8080/api"; // The API endpoint to communicate with the server
+const API_URL = "http://localhost:8080/api/v1"; // The API endpoint to communicate with the server
 
 /**
  * Handles the signup HTTP request to add a new user to the database

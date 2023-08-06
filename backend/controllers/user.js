@@ -192,7 +192,7 @@ const handleLogin = async (req, res) => {
       user.token = token
 
       // user
-      res.status(200).json({ email: user.email, token: user.token })
+      res.status(200).json({ email: user.email, token: user.token, username: user.username })
     } else {
       res.status(400).send('Invalid Credentials')
     }

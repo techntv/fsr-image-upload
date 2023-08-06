@@ -1,5 +1,3 @@
-// frontend/src/components/Navbar.js
-
 import React, { useState, useContext } from "react";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
@@ -7,39 +5,38 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { AuthContext } from "../context";
 
-
 const Actions = ({ auth, customStyle, dispatch }) => {
-    return (
-      <>
-        {auth ? (
-          <button
-            type="button"
-            className={customStyle}
-            onClick={() => {
-              localStorage.removeItem("authUser");
-              dispatch({
-                type: "LOGOUT",
-              });
-            }}
-          >
-            Logout
-          </button>
-        ) : (
-          <>
-            <Link to="/login" className={customStyle}>
-              Login
-            </Link>
-            <Link to="/signup" className={customStyle}>
-              Signup
-            </Link>
-          </>
-        )}
-      </>
-    );
-  };
+  return (
+    <>
+      {auth ? (
+        <button
+          type="button"
+          className={customStyle}
+          onClick={() => {
+            localStorage.removeItem("educativeUser");
+            dispatch({
+              type: "LOGOUT",
+            });
+          }}
+        >
+          Logout
+        </button>
+      ) : (
+        <>
+          <Link to="/login" className={customStyle}>
+            Login
+          </Link>
+          <Link to="/signup" className={customStyle}>
+            Signup
+          </Link>
+        </>
+      )}
+    </>
+  );
+};
 
 const Navbar = ({ auth }) => {
-  const { state , dispatch} = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -57,6 +54,18 @@ const Navbar = ({ auth }) => {
                     className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Home
+                  </Link>
+                  <Link
+                    to="/upload"
+                    className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Upload
+                  </Link>
+                  <Link
+                    to="/view"
+                    className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    View
                   </Link>
                 </div>
               </div>
@@ -133,8 +142,21 @@ const Navbar = ({ auth }) => {
                 >
                   Home
                 </Link>
+                <Link
+                  to="/upload"
+                  className="hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  Upload
+                </Link>
+                <Link
+                  to="/view"
+                  className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  View
+                </Link>
                 <Actions
                   auth={state.auth}
+                  dispatch={dispatch}
                   customStyle="hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium"
                 />
               </div>

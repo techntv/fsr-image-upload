@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import Loader from "./Loader";
+import Alert from "./Alert";
 import AuthService from "../services/auth.service";
 
 const SignupForm = () => {
@@ -9,20 +10,45 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [processing, setProcessing] = useState(false);
+  const [alertState, setAlertState] = useState({
+    show: false,
+    color: "green",
+    msg: "",
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setProcessing(true);
 
     AuthService.signup({ firstName, lastName, username, email, password })
       .then((res) => {
         console.log(res);
+        setProcessing(false);
+        setAlertState({
+          show: true,
+          color: "green",
+          msg: res.data.message,
+        });
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err.response.data);
+        setProcessing(false);
+        setAlertState({
+          show: true,
+          color: "red",
+          msg: err.response.data || "Failed to create the account",
+        });
       });
   };
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+       <div className="flex justify-center">
+        {alertState.show ? (
+          <Alert color={alertState.color} msg={alertState.msg} />
+        ) : null}
+      </div>
       <input type="hidden" name="remember" value="true" />
       <div className="rounded-md shadow-sm -space-y-px">
         <div>
@@ -129,6 +155,9 @@ const SignupForm = () => {
           </span>
           Sign up
         </button>
+      </div>
+      <div className="flex justify-center">
+        {processing ? <Loader /> : null}
       </div>
     </form>
   );

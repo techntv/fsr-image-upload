@@ -1,4 +1,4 @@
-// frontend/src/App.js
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "./context";
@@ -7,29 +7,25 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Confirmation from "./pages/Confirmation";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Upload from "./pages/Upload";
 
 const RequireAuth = ({ children }) => {
   const { state } = useContext(AuthContext);
-  console.log("🚀 ~ file: App.js:13 ~ RequireAuth ~ state:", state)
   return state.auth ? children : <Navigate to="/login" replace />;
 };
 
 const OnlyNotAuth = ({ children }) => {
   const { state } = useContext(AuthContext);
-  return !state.auth ? children : <Navigate to="/" replace />;
-};
-
-const Home = () => {
-  return <h1>Hello, user!</h1>;
+  return !state.auth ? children : <Navigate to="/" />;
 };
 
 const App = () => {
   const { dispatch } = useContext(AuthContext);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("authUser"));
-    console.log("🚀 ~ file: App.js:31 ~ useEffect ~ user:", user)
-    if (user) {
+    const user = JSON.parse(localStorage.getItem("educativeUser"));
+    if (user)
       dispatch({
         type: "LOGIN",
         payload: {
@@ -37,7 +33,10 @@ const App = () => {
           token: user?.token,
         },
       });
-    }
+
+    return () => {
+      localStorage.clear();
+    };
   }, []);
   return (
     <>
@@ -48,6 +47,15 @@ const App = () => {
           element={
             <RequireAuth>
               <Home />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/upload"
+          element={
+            <RequireAuth>
+              <Upload />
             </RequireAuth>
           }
         />
