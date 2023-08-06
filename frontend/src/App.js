@@ -1,49 +1,49 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useContext, useEffect } from "react";
-import { AuthContext } from "./context";
-import Navbar from "./components/Navbar";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Signup from "./pages/Signup";
-import Confirmation from "./pages/Confirmation";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Upload from "./pages/Upload";
+import React, { useContext, useEffect } from 'react'
+import { AuthContext } from './context'
+import Navbar from './components/Navbar'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Signup from './pages/Signup'
+import Confirmation from './pages/Confirmation'
+import Login from './pages/Login'
+import Home from './pages/Home'
+import Upload from './pages/Upload'
 
 const RequireAuth = ({ children }) => {
-  const { state } = useContext(AuthContext);
-  return state.auth ? children : <Navigate to="/login" replace />;
-};
+  const { state } = useContext(AuthContext)
+  return state.auth ? children : <Navigate to='/login' replace />
+}
 
 const OnlyNotAuth = ({ children }) => {
-  const { state } = useContext(AuthContext);
-  return !state.auth ? children : <Navigate to="/" />;
-};
+  const { state } = useContext(AuthContext)
+  return !state.auth ? children : <Navigate to='/' />
+}
 
 const App = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext)
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("educativeUser"));
+    const user = JSON.parse(localStorage.getItem('authUser'))
     if (user)
       dispatch({
-        type: "LOGIN",
+        type: 'LOGIN',
         payload: {
           user: user,
-          token: user?.token,
-        },
-      });
+          token: user?.token
+        }
+      })
 
     return () => {
-      localStorage.clear();
-    };
-  }, []);
+      localStorage.clear()
+    }
+  }, [])
   return (
     <>
       <Navbar auth={false} />
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
             <RequireAuth>
               <Home />
@@ -52,7 +52,7 @@ const App = () => {
         />
 
         <Route
-          path="/upload"
+          path='/upload'
           element={
             <RequireAuth>
               <Upload />
@@ -61,7 +61,7 @@ const App = () => {
         />
 
         <Route
-          path="/signup"
+          path='/signup'
           element={
             <OnlyNotAuth>
               <Signup />
@@ -69,7 +69,7 @@ const App = () => {
           }
         />
         <Route
-          path="/login"
+          path='/login'
           element={
             <OnlyNotAuth>
               <Login />
@@ -77,7 +77,7 @@ const App = () => {
           }
         />
         <Route
-          path="/verify/:confirmationToken"
+          path='/verify/:confirmationToken'
           element={
             <OnlyNotAuth>
               <Confirmation />
@@ -86,7 +86,7 @@ const App = () => {
         />
       </Routes>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
