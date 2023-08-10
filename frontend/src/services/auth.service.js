@@ -1,6 +1,6 @@
-import axios from "axios"; // HTTP Client
+import axios from 'axios' // HTTP Client
 
-const API_URL = "http://localhost:8080/api/v1"; // The API endpoint to communicate with the server
+const API_URL = 'http://localhost:8080' // The API endpoint to communicate with the server
 
 /**
  * Handles the signup HTTP request to add a new user to the database
@@ -12,9 +12,9 @@ const signup = ({ firstName, lastName, username, email, password }) => {
     lastName,
     username,
     email,
-    password,
-  });
-};
+    password
+  })
+}
 
 /**
  * Handles the login HTTP request to access your user profile
@@ -23,29 +23,29 @@ const signup = ({ firstName, lastName, username, email, password }) => {
 const login = ({ emailOrUsername, password }) => {
   return axios
     .post(`${API_URL}/login/`, { emailOrUsername, password })
-    .then((res) => {
+    .then(res => {
       /**
        * If successfully logged in, store the user data, inlucding the token, in the localStorage
        */
-      localStorage.setItem("authUser", JSON.stringify(res.data));
-      return res.data;
-    });
-};
+      localStorage.setItem('authUser', JSON.stringify(res.data))
+      return res.data
+    })
+}
 
 const logout = () => {
-  localStorage.removeItem("authUser");
-};
+  localStorage.removeItem('authUser')
+}
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("authUser"));
-};
+  return JSON.parse(localStorage.getItem('authUser'))
+}
 
 /**
  * Handles the verify email request.
  */
-const verify = (confirmationToken) => {
-    return axios.get(`${API_URL}/verify/${confirmationToken}`);
-  };
+const verify = confirmationToken => {
+  return axios.get(`${API_URL}/verify/${confirmationToken}`)
+}
 
 const AuthService = {
   signup,
@@ -53,6 +53,6 @@ const AuthService = {
   logout,
   getCurrentUser,
   verify
-};
+}
 
-export default AuthService;
+export default AuthService

@@ -1,4 +1,4 @@
-const { File, validate } = require('../models/file')
+const { FileData, validate } = require('../models/file')
 const fs = require('fs')
 const readline = require('readline')
 const SpellChecker = require('simple-spellchecker').getDictionarySync('en-GB')
@@ -66,18 +66,18 @@ const handleUpload = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message)
 
     const { name, description } = req.body
-    let path = req.file.path
+    let path = req.FileData.path
 
-    if (req.file.mimetype === 'text/plain') {
-      await spellCheck(req.file.path)
-      path = `${req.file.path}.txt`
+    if (req.FileData.mimetype === 'text/plain') {
+      await spellCheck(req.FileData.path)
+      path = `${req.FileData.path}.txt`
     }
 
-    if (req.file.mimetype.match(/^image/)) {
-      path = await processImage(req.file.path)
+    if (req.FileData.mimetype.match(/^image/)) {
+      path = await processImage(req.FileData.path)
     }
 
-    const file = await File.create({
+    const file = await FileData.create({
       name,
       createdBy: req.user.user_id,
       description,
@@ -97,7 +97,7 @@ const handleGetAllFiles = async (req, res) => {
   try {
     const { createdBy } = req.params
 
-    const allFiles = await File.find({ createdBy: createdBy })
+    const allFiles = await FileData.find({ createdBy: createdBy })
     res
       .status(200)
       .json({ message: 'Files retrieved successfully', data: allFiles })
@@ -111,7 +111,7 @@ const handleGetFile = async (req, res) => {
   try {
     const { createdBy, fileId } = req.params
 
-    const files = await File.findOne({ _id: fileId, createdBy: createdBy })
+    const files = await FileData.findOne({ _id: fileId, createdBy: createdBy })
 
     if (!files) {
       return res.status(404).send('The requested file does not exist')
@@ -139,7 +139,7 @@ const handleSearchFile = async (req, res) => {
 
     if (req.query.createdAt) filter.createdAt = req.query.createdAt
 
-    const files = await File.find(filter)
+    const files = await FileData.find(filter)
 
     res
       .status(200)
@@ -158,8 +158,7 @@ const handleUpdateFile = async (req, res) => {
     if (!name || !description)
       return res.status(400).send("File's name and description are required")
 
-    const result = await File.validateAsync({ name, description })
-    const file = await File.findOne({
+    const file = await FileData.findOne({
       _id
     })
 
@@ -167,12 +166,12 @@ const handleUpdateFile = async (req, res) => {
       return res.status(404).send('The requested file does not exist')
     }
 
-    const updatedFile = await File.update(
+    const updatedFile = await FileData.updateOne(
       {
         _id
       },
       {
-        $set: result
+        $set: { name, description }
       },
       { upsert: true }
     )
@@ -189,7 +188,7 @@ const handleUpdateFile = async (req, res) => {
 const handleDeleteFile = async (req, res) => {
   try {
     const { _id } = req.params
-    const file = await File.findOne({
+    const file = await FileData.findOne({
       _id
     })
 
@@ -197,7 +196,7 @@ const handleDeleteFile = async (req, res) => {
       return res.status(404).send('The requested file does not exist')
     }
 
-    await File.remove({
+    await FileData.findOneAndRemove({
       _id
     })
 
