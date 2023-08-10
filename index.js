@@ -13,12 +13,17 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, '/frontend/build')))
 app.use('/uploads', express.static('./uploads'))
 
 app.use('/', router)
 
 app.post('/api/hello', auth, (req, res) => {
   res.status(200).send('Hello 🙌 ')
+})
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '/frontend/build', 'index.html'))
 })
 
 app.listen(port, () => {
