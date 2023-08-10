@@ -22,10 +22,18 @@ const updateFile = file => {
     }
   )
 }
+
+const deleteFile = id => {
+  return axios.delete(`/file/${id}`, {
+    headers: { ...authHeader() }
+  })
+}
+
 const UserService = {
   upload,
   getFiles,
-  updateFile
+  updateFile,
+  deleteFile
 }
 
 export default UserService

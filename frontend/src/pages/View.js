@@ -23,7 +23,7 @@ const View = () => {
     <>
       <div className='grid grid-cols-3 gap-4 m-10'>
         {files.map(file => {
-          return <Card file={file} />
+          return <Card file={file} fetchFiles={fetchFiles} />
         })}
       </div>
     </>

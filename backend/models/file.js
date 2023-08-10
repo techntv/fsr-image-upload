@@ -1,40 +1,40 @@
 // backend/models/file.js
 
-const mongoose = require("mongoose");
-const Joi = require("joi");
+const mongoose = require('mongoose')
+const Joi = require('joi')
 
 const fileSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-    required: true,
+    ref: 'user',
+    required: true
   },
   filePath: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: [true, "Uploaded file must have a name"],
+    required: [true, 'Uploaded file must have a name']
   },
   description: {
     type: String,
-    required: [true, "Uploaded file must have a description"],
-  },
-});
+    required: [true, 'Uploaded file must have a description']
+  }
+})
 
-const File = mongoose.model("file", fileSchema);
+const FileData = mongoose.model('file', fileSchema)
 
-const validate = (file) => {
+const validate = file => {
   const schema = Joi.object({
     name: Joi.string().required(),
-    description: Joi.string().required(),
-  });
-  return schema.validate(file);
-};
+    description: Joi.string().required()
+  })
+  return schema.validate(file)
+}
 
-module.exports = { File, validate };
+module.exports = { FileData, validate }
