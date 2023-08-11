@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://0.0.0.0:4000",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@craco/craco": "^6.4.2",
     "@headlessui/react": "^1.4.2",
@@ -18,7 +18,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "PORT=4000 craco start",
+    "start": "PORT=3000 craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
