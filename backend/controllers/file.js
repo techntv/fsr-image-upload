@@ -66,15 +66,15 @@ const handleUpload = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message)
 
     const { name, description } = req.body
-    let path = req.FileData.path
+    let path = req.file.path
 
-    if (req.FileData.mimetype === 'text/plain') {
-      await spellCheck(req.FileData.path)
-      path = `${req.FileData.path}.txt`
+    if (req.file.mimetype === 'text/plain') {
+      await spellCheck(req.file.path)
+      path = `${req.file.path}.txt`
     }
 
-    if (req.FileData.mimetype.match(/^image/)) {
-      path = await processImage(req.FileData.path)
+    if (req.file.mimetype.match(/^image/)) {
+      path = await processImage(req.file.path)
     }
 
     const file = await FileData.create({

@@ -4,7 +4,6 @@ const verify = (req, res, next) => {
   // Considering the possible 3 methods to pass the token
   const token =
     req.body.token || req.query.token || req.headers['x-access-token']
-  console.log('🚀 ~ file: auth.js:6 ~ verify ~ token:', token)
 
   if (!token) {
     // If the token is not represented in any method, return an error

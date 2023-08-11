@@ -53,7 +53,7 @@ const createTransporter = async () => {
 const sendEmail = async ({ email, username, res }) => {
   // Create a unique confirmation token
   const confirmationToken = encrypt(username)
-  const apiUrl = process.env.API_URL || 'http://0.0.0.0:4000'
+  const apiUrl = process.env.API_URL || 'http://0.0.0.0:8080'
 
   // Initialize the Nodemailer with your Gmail credentials
   const Transport = await createTransporter()
@@ -63,7 +63,7 @@ const sendEmail = async ({ email, username, res }) => {
     from: 'Admin',
     to: email,
     subject: 'Email Confirmation',
-    html: `Press the following link to verify your email: <a href=http://localhost:4000/verify/${confirmationToken}>Verification Link</a>`
+    html: `Press the following link to verify your email: <a href=http://localhost:8080/verify/${confirmationToken}>Verification Link</a>`
   }
 
   // Send the email
